@@ -7,6 +7,14 @@ namespace xadrez_console
     {
         static void Main(string[] args)
         {
+            
+            Tabuleiro tab = new Tabuleiro(8, 8);
+
+            Tela.ImprimirTabuleiro(tab);
+
+
+            Console.ReadLine();
+
             //Posicao P;
 
             //P = new Posicao(3, 4);
@@ -15,11 +23,11 @@ namespace xadrez_console
 
             //Console.ReadLine();
 
-            Tabuleiro tab = new Tabuleiro(8, 8);
+            //Tabuleiro tab = new Tabuleiro(8, 8);
 
-            Console.WriteLine("--------------------------------");
+            //Console.WriteLine("--------------------------------");
 
-            Console.ReadLine();
+            //Console.ReadLine();
 
         }
     }
