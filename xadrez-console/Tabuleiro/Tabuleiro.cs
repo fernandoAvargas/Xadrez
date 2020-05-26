@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace tabuleiro
 {
     class Tabuleiro
@@ -12,16 +7,16 @@ namespace tabuleiro
         public int Colunas { get; set; }
         private Peca[,] Pecas;
 
-        public Tabuleiro(int linhas, int colunas)
+        public Tabuleiro(int colunas,int linhas)
         {
             Linhas = linhas;
             Colunas = colunas;
-            Pecas = new Peca[Linhas, Colunas];
+            Pecas = new Peca[Colunas,Linhas];
         }
 
         public Peca Peca(Posicao pos)
         {
-            return Pecas[pos.linha, pos.coluna];
+            return Pecas[pos.coluna,pos.linha];
         }
 
         public bool ExistePeca(Posicao pos)
@@ -31,9 +26,9 @@ namespace tabuleiro
             return Peca(pos) != null;
         }
 
-        public Peca Peca(int linha,int coluna)
+        public Peca Peca(int coluna,int linha)
         {
-            return Pecas[linha, coluna];
+            return Pecas[coluna,linha];
         }
 
         public void ColocarPeca(Peca p,Posicao pos)
@@ -44,14 +39,24 @@ namespace tabuleiro
 
             }
 
-                Pecas[pos.linha, pos.coluna] = p;
+                Pecas[pos.coluna, pos.linha ] = p;
 
-                p.Posicao = pos;
-
-            
-
+                p.Posicao = pos;   
         }
 
+
+        public Peca RetirarPeca(Posicao pos)
+        {
+            if(Peca(pos) == null)
+            {
+                return null;
+            }
+
+            Peca aux = Peca(pos);
+            aux.Posicao = null;
+            Pecas[pos.coluna,pos.linha] = null;
+            return aux;
+        }
         public bool PosicaoValida(Posicao pos) {
 
             if (pos.linha<0 || pos.linha>=Linhas||pos.coluna<0 || pos.coluna>=Colunas)
@@ -68,10 +73,7 @@ namespace tabuleiro
             if (!PosicaoValida(pos))
             {
                 throw new TabuleiroException("Posição inválida!");
-
             }
-
-
         }
     }
 }
