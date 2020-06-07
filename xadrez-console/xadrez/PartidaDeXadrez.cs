@@ -42,29 +42,29 @@ namespace xadrez_console.xadrez
 
                 var linha = (i <= 7) ? 2 : 7;
 
-                tab.ColocarPeca(new Peao(tab, cor), new PosicaoXadrez(char.Parse(coluna.ToString()), linha).ToPosicao());
+                tab.ColocarPeca(new Peao(tab, cor), new PosicaoXadrez(linha,char.Parse(coluna.ToString())).ToPosicao());
 
                 linha = (i <= 7) ? 1 : 8;
 
                 if (i == 0 || i == 7 || i == 8 || i == 15)
 
-                    tab.ColocarPeca(new Torre(tab, cor), new PosicaoXadrez(char.Parse(coluna.ToString()), linha).ToPosicao());
+                    tab.ColocarPeca(new Torre(tab, cor), new PosicaoXadrez(linha,char.Parse(coluna.ToString())).ToPosicao());
 
                 if (i == 1 || i == 6 || i == 9 || i == 14)
 
-                    tab.ColocarPeca(new Cavalo(tab, cor), new PosicaoXadrez(char.Parse(coluna.ToString()), linha).ToPosicao());
+                    tab.ColocarPeca(new Cavalo(tab, cor), new PosicaoXadrez(linha,char.Parse(coluna.ToString())).ToPosicao());
 
                 if (i == 2 || i == 5 || i == 10 || i == 13)
 
-                    tab.ColocarPeca(new Bispo(tab, cor), new PosicaoXadrez(char.Parse(coluna.ToString()), linha).ToPosicao());
+                    tab.ColocarPeca(new Bispo(tab, cor), new PosicaoXadrez(linha,char.Parse(coluna.ToString())).ToPosicao());
 
                 if (i == 3 || i == 11)
                 {
-                    tab.ColocarPeca(new Rainha(tab, cor), new PosicaoXadrez(char.Parse(coluna.ToString()), linha).ToPosicao());
+                    tab.ColocarPeca(new Rainha(tab, cor), new PosicaoXadrez(linha,char.Parse(coluna.ToString())).ToPosicao());
                 }
                 else if(i == 4 || i == 12)
                 {
-                    tab.ColocarPeca(new Rei(tab, cor), new PosicaoXadrez(char.Parse(coluna.ToString()), linha).ToPosicao());
+                    tab.ColocarPeca(new Rei(tab, cor), new PosicaoXadrez(linha,char.Parse(coluna.ToString())).ToPosicao());
                 }
             }
         }
