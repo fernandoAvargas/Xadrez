@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using tabuleiro;
 using xadrez;
 using xadrez_console.xadrez.Enum;
@@ -27,6 +28,27 @@ namespace xadrez_console.xadrez
             ExecutaMovimento(origem, destino);
             Turno++;
             MudarJogador();
+        }
+
+
+        public void ValidarPosicaoDeOrigem(Posicao pos)
+        {
+
+            if (Tab.Peca(pos) == null)
+            {
+                throw new TabuleiroException("Não existe peça na posição de origem escolhida!");
+            }
+
+            if(JogadorAtual != Tab.Peca(pos).Cor)
+            {
+                throw new TabuleiroException("A peça que você escolheu não é sua!");
+            }
+
+            if (!Tab.Peca(pos).ExisteMovimentosPossiveis())
+            {
+                throw new TabuleiroException("Não existe movimentos possíveis para a peça escolhida!");
+            }
+
         }
 
 
