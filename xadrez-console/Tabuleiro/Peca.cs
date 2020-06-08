@@ -42,6 +42,11 @@ namespace tabuleiro
             return false;
         }
 
+        public bool PodeMoverParaDestino(Posicao pos)
+        {
+            return MovimentosPossiveis()[pos.linha, pos.coluna];
+        }
+
 
 
 

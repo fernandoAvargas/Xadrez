@@ -51,6 +51,17 @@ namespace xadrez_console.xadrez
 
         }
 
+        public void ValidarPosicaoDestino(Posicao origem,Posicao destino)
+        {
+            if (!Tab.Peca(origem).PodeMoverParaDestino(destino))
+            {
+                throw new TabuleiroException("Posição de destino inválida");
+
+            }
+
+
+        }
+
 
         private void MudarJogador()
         {
