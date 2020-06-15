@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using tabuleiro;
 using xadrez;
@@ -13,14 +14,36 @@ namespace xadrez_console.xadrez
         public Cor JogadorAtual { get; private set; }
         public bool terminada { get; private set; }
 
+        private HashSet<Peca> pecas;
+
+        private HashSet<Peca> capturadas;
+
         public PartidaDeXadrez()
         {
             Tab = new Tabuleiro(8, 8);
             Turno = 1;
             JogadorAtual = Cor.Branca;
             terminada = false;
+            pecas = new HashSet<Peca>();
+            capturadas = new HashSet<Peca>();
             ColocarPecas();
 
+        }
+
+        public void ExecutarMovimento(Posicao origem, Posicao destino)
+        {
+            Peca p = Tab.RetirarPeca(origem);
+
+            p.IcrementarQtdeMovimentos();
+
+            Peca pecaCapiturada = Tab.RetirarPeca(destino);
+
+            Tab.ColocarPeca(p, destino);
+
+            if (pecaCapiturada != null)
+            {
+                capturadas.Add(pecaCapiturada);
+            }
         }
 
         public void RealizarJogada(Posicao origem, Posicao destino)
@@ -39,9 +62,12 @@ namespace xadrez_console.xadrez
                 throw new TabuleiroException("Não existe peça na posição de origem escolhida!");
             }
 
-            if(JogadorAtual != Tab.Peca(pos).Cor)
+            if (JogadorAtual != Tab.Peca(pos).Cor)
             {
-                throw new TabuleiroException("A peça que você escolheu não é sua!");
+                if ("Vermelha" != (Tab.Peca(pos).Cor).ToString())
+                {
+                    throw new TabuleiroException("A peça que você escolheu não é sua!");
+                }
             }
 
             if (!Tab.Peca(pos).ExisteMovimentosPossiveis())
@@ -51,7 +77,7 @@ namespace xadrez_console.xadrez
 
         }
 
-        public void ValidarPosicaoDestino(Posicao origem,Posicao destino)
+        public void ValidarPosicaoDestino(Posicao origem, Posicao destino)
         {
             if (!Tab.Peca(origem).PodeMoverParaDestino(destino))
             {
@@ -65,7 +91,7 @@ namespace xadrez_console.xadrez
 
         private void MudarJogador()
         {
-            if(JogadorAtual == Cor.Branca)
+            if (JogadorAtual == Cor.Branca)
             {
                 JogadorAtual = Cor.Preta;
             }
@@ -83,9 +109,49 @@ namespace xadrez_console.xadrez
             Tab.ColocarPeca(p, destino);
         }
 
+        public void ColocarNovaPeca(int linha, char coluna, Peca peca)
+        {
+            Tab.ColocarPeca(peca, new PosicaoXadrez(linha, coluna).ToPosicao());
+            pecas.Add(peca);
+
+        }
+
+        public HashSet<Peca>PecasCapturadas(Cor cor) {
+
+            HashSet<Peca> aux = new HashSet<Peca>();
+
+            foreach(Peca x in capturadas)
+            {
+                if(x.Cor == cor){
+
+                    aux.Add(x);
+                }
+            }
+
+            return aux;        
+        }
+
+
+        public HashSet<Peca> PecasEmJogo(Cor cor)
+        {
+            HashSet<Peca> aux = new HashSet<Peca>();
+
+            foreach (Peca x in pecas)
+            {
+                if (x.Cor == cor)
+                {
+
+                    aux.Add(x);
+                }
+            }
+
+            aux.ExceptWith(PecasCapturadas(cor));
+
+            return aux;
+        }
         public void ColocarPecas()
         {
-            // Colocar todas as peças no tabuleiro            
+            // Colocar todas as peças no tabuleiro        
 
             for (int i = 0; i <= 15; i++)
             {
@@ -95,29 +161,29 @@ namespace xadrez_console.xadrez
 
                 var linha = (i <= 7) ? 2 : 7;
 
-                Tab.ColocarPeca(new Peao(Tab, cor), new PosicaoXadrez(linha,char.Parse(coluna.ToString())).ToPosicao());
+                ColocarNovaPeca(linha, char.Parse(coluna.ToString()), new Peao(Tab, cor));
 
                 linha = (i <= 7) ? 1 : 8;
 
                 if (i == 0 || i == 7 || i == 8 || i == 15)
 
-                    Tab.ColocarPeca(new Torre(Tab, cor), new PosicaoXadrez(linha,char.Parse(coluna.ToString())).ToPosicao());
+                    ColocarNovaPeca(linha, char.Parse(coluna.ToString()), new Torre(Tab, cor));
 
                 if (i == 1 || i == 6 || i == 9 || i == 14)
 
-                    Tab.ColocarPeca(new Cavalo(Tab, cor), new PosicaoXadrez(linha,char.Parse(coluna.ToString())).ToPosicao());
+                    ColocarNovaPeca(linha, char.Parse(coluna.ToString()), new Cavalo(Tab, cor));
 
                 if (i == 2 || i == 5 || i == 10 || i == 13)
 
-                    Tab.ColocarPeca(new Bispo(Tab, cor), new PosicaoXadrez(linha,char.Parse(coluna.ToString())).ToPosicao());
+                    ColocarNovaPeca(linha, char.Parse(coluna.ToString()), new Bispo(Tab, cor));
 
                 if (i == 3 || i == 11)
                 {
-                    Tab.ColocarPeca(new Rainha(Tab, cor), new PosicaoXadrez(linha,char.Parse(coluna.ToString())).ToPosicao());
+                    ColocarNovaPeca(linha, char.Parse(coluna.ToString()), new Rainha(Tab, cor));
                 }
-                else if(i == 4 || i == 12)
+                else if (i == 4 || i == 12)
                 {
-                    Tab.ColocarPeca(new Rei(Tab, cor), new PosicaoXadrez(linha,char.Parse(coluna.ToString())).ToPosicao());
+                    ColocarNovaPeca(linha, char.Parse(coluna.ToString()), new Rei(Tab, cor));
                 }
             }
         }
