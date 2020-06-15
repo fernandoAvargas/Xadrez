@@ -48,7 +48,7 @@ namespace xadrez_console.xadrez
 
         public void RealizarJogada(Posicao origem, Posicao destino)
         {
-            ExecutaMovimento(origem, destino);
+            ExecutarMovimento(origem, destino);
             Turno++;
             MudarJogador();
         }
@@ -84,10 +84,7 @@ namespace xadrez_console.xadrez
                 throw new TabuleiroException("Posição de destino inválida");
 
             }
-
-
         }
-
 
         private void MudarJogador()
         {
@@ -101,13 +98,13 @@ namespace xadrez_console.xadrez
             }
         }
 
-        public void ExecutaMovimento(Posicao origem, Posicao destino)
-        {
-            Peca p = Tab.RetirarPeca(origem);
-            p.IcrementarQtdeMovimentos();
-            Peca pecaCapiturada = Tab.RetirarPeca(destino);
-            Tab.ColocarPeca(p, destino);
-        }
+        //public void ExecutaMovimentos(Posicao origem, Posicao destino)
+        //{
+        //    Peca p = Tab.RetirarPeca(origem);
+        //    p.IcrementarQtdeMovimentos();
+        //    Peca pecaCapiturada = Tab.RetirarPeca(destino);
+        //    Tab.ColocarPeca(p, destino);
+        //}
 
         public void ColocarNovaPeca(int linha, char coluna, Peca peca)
         {
@@ -119,6 +116,8 @@ namespace xadrez_console.xadrez
         public HashSet<Peca>PecasCapturadas(Cor cor) {
 
             HashSet<Peca> aux = new HashSet<Peca>();
+
+            cor = cor == Cor.Preta?Cor.Vermelha:Cor.Branca;
 
             foreach(Peca x in capturadas)
             {
